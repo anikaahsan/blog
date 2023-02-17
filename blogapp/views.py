@@ -1,8 +1,29 @@
 from django.shortcuts import render,redirect
-from rest_framework.response import Response 
-from rest_framework.decorators import api_view
 from django.http import HttpResponse
-from blogapp.form import SignUpForm,PostForm,LoginForm
+from .forms import SignupForm,PostForm
+from .form import SignUpForm
+from django.contrib import messages
+
+def signup_function(request):
+    
+     if request.method=="POST":
+          signupform=SignupForm(request.POST)
+          if signupform.is_valid():
+               signupform.save()
+               messages.success(request,('signup complete!!welcome blogger'))
+               return redirect('post')
+          else:
+               signupform=SignupForm()
+               messages.success(request,('user sign validation rules not followed.try again!!'))
+               return render(request,'signupform.html',{'form':signupform})
+               
+               #return HttpResponse('error')
+
+    
+     else:     
+          signupform=SignupForm()
+          return render(request,'signupform.html',{'form':signupform})
+
 
 
 def sign_up(request):
@@ -10,8 +31,9 @@ def sign_up(request):
           form=SignUpForm(request.POST )
           if form.is_valid():
                form.save(commit=True)
-               postform=PostForm()
-               return render(request,'postform.html',{'form':postform})     
+
+               # postform=PostForm()
+               # return render(request,'postform.html',{'form':postform})     
           else:
                return HttpResponse("NO BUG BUT NOT SAVED!")
 
@@ -20,9 +42,9 @@ def sign_up(request):
          return render(request,'signupform.html',{'form':form})
 
 
-
-
-
+def postform_function(request):
+     postform=PostForm()
+     return render(request,'postform.html',{'form':postform})
 
 
 
