@@ -4,8 +4,13 @@ from .forms import SignupForm,PostForm
 from .form import SignUpForm
 from django.contrib import messages
 
-def signup_function(request):
-    
+def index_function(request):
+     return render(request,'index.html')
+
+
+
+
+def signup_function(request):   
      if request.method=="POST":
           signupform=SignupForm(request.POST)
           if signupform.is_valid():
@@ -17,9 +22,7 @@ def signup_function(request):
                messages.success(request,('user sign validation rules not followed.try again!!'))
                return render(request,'signupform.html',{'form':signupform})
                
-               #return HttpResponse('error')
-
-    
+               #return HttpResponse('error') 
      else:     
           signupform=SignupForm()
           return render(request,'signupform.html',{'form':signupform})
